@@ -289,7 +289,7 @@ class _UpdateSheetState extends State<UpdateSheet> {
                     ),
                     Multi(
                         color: const Color.fromARGB(255, 4, 17, 65),
-                        subtitle: 'Enginee',
+                        subtitle: 'Engineee',
                         weight: FontWeight.w600,
                         size: 20),
                     SizedBox(

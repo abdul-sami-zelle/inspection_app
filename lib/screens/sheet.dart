@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
@@ -7,6 +8,8 @@ import 'package:sign_up_page_2/screens/first_page.dart';
 import 'package:sign_up_page_2/screens/update_sheet.dart';
 import 'package:sign_up_page_2/statemaneger/Provider.dart';
 import 'package:sign_up_page_2/widgets/table.dart';
+import 'package:sign_up_page_2/widgets/tableData.dart';
+import 'package:sign_up_page_2/widgets/tableDataDesign2.dart';
 
 class Sheet extends StatefulWidget {
   Sheet({
@@ -289,10 +292,64 @@ class _SheetState extends State<Sheet> {
                     ),
                     Container(
                       height: 250.h,
-                      width: double.infinity,
+                      // width: double.infinity,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Table1(),
+                        child: SingleChildScrollView(
+                          child:
+                            FutureBuilder(
+            future: Provider11.fetchData(),
+            initialData: "Code sample",
+            builder: (BuildContext context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.deepPurpleAccent,
+                  ),
+                );
+              }
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text(
+                      'An ${snapshot.error} occurred',
+                      style: const TextStyle(fontSize: 18, color: Colors.red),
+                    ),
+                  );
+                } else if (snapshot.hasData) {
+                  final data = snapshot.data;
+
+                  return ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: Provider11.data1.length,
+                    itemBuilder: (context,index){
+                     
+                      return 
+                      TableDataContainer2(no: Provider11.data1[index].ser.toString(), dueAt: '300hrs/6Months', descr: Provider11.data1[index].descr.toString(),);
+                    });
+              
+
+
+
+
+
+
+
+                          
+                }
+              }
+
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          ),
+                          
+                          
+                          
+
+                        ),
                       ),
                     ),
                     Row(
@@ -317,12 +374,34 @@ class _SheetState extends State<Sheet> {
                                 weight: FontWeight.w400,
                                 size: 15)),
                         ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>  FirstPage()),
-                              );
+                            onPressed: ()async {
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //       builder: (context) =>  FirstPage()),
+                              // );
+                                
+     await FirebaseFirestore.instance
+    .collection('table_info')
+    .doc("SMfpoRM3hsZHqOuOq2aU").collection("16-oct-2023").doc('SMfpoRM3hsZHqOuOq2aU')
+    .get()
+    .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        print(documentSnapshot.data());
+        final Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
+      var data2  =data['data'];
+      for (var i = 0; i < data2.length; i++) {
+        if (data2[i].containsKey("sub")) {
+          print("yes");
+        } else {
+          print("no");
+        }
+      }
+      }
+
+    
+    });
+   
                             },
                             style: ElevatedButton.styleFrom(
                                 backgroundColor:

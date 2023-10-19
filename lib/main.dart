@@ -6,6 +6,7 @@ import 'package:sign_up_page_2/screens/sign_up_screen.dart';
 import 'package:sign_up_page_2/splashscreen.dart';
 import 'package:sign_up_page_2/statemaneger/Provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:sign_up_page_2/testing.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
                 primarySwatch: Colors.blue,
               ),
 
-              home: MyHomePage(),
+              home: Testing11(),
               //SplashScreen(),
             ),
           );
