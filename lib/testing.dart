@@ -1,4 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sign_up_page_2/multi.dart';
+import 'package:sign_up_page_2/testing3.dart';
+import 'package:sign_up_page_2/widgets/tableDataDesign2.dart';
 
 
 class Testing11 extends StatelessWidget {
@@ -7,11 +12,198 @@ class Testing11 extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: Text('Table-like Layout')),
-        body: MyTableDataContainer2(),
+        body: 
+        //  SingleChildScrollView(
+        //                   child: Column(
+        //                     children: [
+        //                       TableDataContainer2(no: '1', dueAt: '300hrs/6Months', descr: '',),
+        //                       TableDataContainer2(no: '2', dueAt: '200hrs/6Months', descr: '',),
+        //                       TableDataContainer2(no: '3', dueAt: '00hrs/6Months', descr: '',),
+        //                       TableDataContainer2(no: '4', dueAt: '3500hrs/6Months', descr: '',)
+        //                     ],
+        //                   ),
+        //                 ),
+        UserInformation(),
       ),
     );
   }
 }
+
+
+class UserInformation extends StatefulWidget {
+  @override
+    _UserInformationState createState() => _UserInformationState();
+}
+
+class _UserInformationState extends State<UserInformation> {
+  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('table_data').snapshots();
+
+  @override
+  Widget build(BuildContext context) {
+    List<DataFormat11> dataMulti = [];
+    return StreamBuilder<QuerySnapshot>(
+      stream: _usersStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Text('Something went wrong');
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Text("Loading");
+        }
+
+        return ListView(
+         
+          children: snapshot.data!.docs.map((DocumentSnapshot document) {
+          Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+          
+            return Container(
+              child: data['Data']!=null?  MultiLines()
+                 
+    //             Padding(
+    //   padding: EdgeInsets.only(bottom: 10.h),
+    //   child: Container(
+    //     width: double.infinity,
+    //     decoration: BoxDecoration(
+    //       borderRadius: BorderRadius.circular(8),
+    //     ),
+    //     child: SingleChildScrollView(
+    //       scrollDirection: Axis.horizontal,
+    //       child: Container(
+    //         decoration: BoxDecoration(
+    //           border: Border(
+    //             bottom: BorderSide(width: 1, color: Colors.black)
+    //           )
+    //         ),
+    //         child: Row(
+    //           crossAxisAlignment: CrossAxisAlignment.start,
+    //           children: [
+    //             Column(
+    //               crossAxisAlignment: CrossAxisAlignment.start,
+    //               children: [
+    //                 Container(
+    //                    decoration: BoxDecoration(
+    //           border: Border(
+    //             bottom: BorderSide(width: 1, color: Colors.black)
+    //           )
+    //         ),
+    //                   child: Row(
+                        
+    //                     children: [
+    //                       Padding(
+    //                         padding:EdgeInsets.only(bottom: 3.h),
+    //                         child: Container(
+    //                           height: 30,
+    //                           width: 30,
+    //                           decoration: BoxDecoration(
+    //                               shape: BoxShape.circle, color: Colors.grey),
+    //                           child: Center(
+    //                             child: Multi(
+    //                                 color: Colors.black,
+    //                                 subtitle: '{no}',
+    //                                 weight: FontWeight.bold,
+    //                                 size: 13),
+    //                           ),
+    //                         ),
+    //                       ),
+    //                       SizedBox(width: 5.w,),
+                        
+    //                       Container(
+    //                          width: 100.w,
+    //                         child: Multi(
+    //                             color: Colors.black,
+    //                             subtitle: "Auth",
+    //                             weight: FontWeight.bold,
+    //                             size: 10),
+    //                       ),
+    //                       SizedBox(width: 5.w,),
+    //                       Container(
+    //                          width: 200.w,
+    //                         child: Multi(
+    //                             color: Colors.black,
+    //                             subtitle: "Description",
+    //                             weight: FontWeight.bold,
+    //                             size: 10),
+    //                       ),
+    //                       SizedBox(width: 5.w,),
+    //                       Container(
+    //                         width: 100.w,
+    //                         child: Multi(
+    //                             color: Colors.grey,
+    //                             subtitle: "Status",
+    //                             weight: FontWeight.bold,
+    //                             size: 10),
+    //                       ),
+    //                       SizedBox(width: 5.w,),
+    //                       Container(
+    //                         width: 100.w,
+    //                         child: Multi(
+    //                             color: Colors.grey,
+    //                             subtitle: "Action",
+    //                             weight: FontWeight.bold,
+    //                             size: 10),
+    //                       ),
+    //                       SizedBox(width: 5.w,),
+    //                       Container(
+    //                           width: 100.w,
+    //                         child: Multi(
+    //                             color: Colors.grey,
+    //                             subtitle: "Technician",
+    //                             weight: FontWeight.bold,
+    //                             size: 10),
+    //                       ),
+    //                       SizedBox(width: 5.w,),
+    //                       Container(
+    //                         width: 100.w,
+    //                         child: Multi(
+    //                             color: Colors.grey,
+    //                             subtitle: "QCI",
+    //                             weight: FontWeight.bold,
+    //                             size: 10),
+    //                       ),
+    //                     ],
+    //                   ),
+    //                 ),
+             
+                    
+                     
+    //               ],
+    //             ),
+    //           ],
+    //         ),
+    //       ),
+    //     ),
+    //   ),
+    // )
+                :TableDataContainer2(no: (1).toString(), dueAt: data['qci'], descr: data['tech'])
+            );
+          }).toList(),
+        );
+      },
+    );
+  }
+}
+
+
+
+
+
+
+
+class DataFormat11 {
+  String? tech;
+  String? qci;
+  String? action;
+  DataFormat11({required this.tech,required this.qci,required this.action});
+}
+
+
+
+
+
+
+
+
 
 class MyTableDataContainer2 extends StatelessWidget {
   final List<List<Map<String, String>>> data = [
