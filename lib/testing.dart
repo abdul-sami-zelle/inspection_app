@@ -1,16 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:sign_up_page_2/multi.dart';
+import 'package:sign_up_page_2/statemaneger/Provider.dart';
 import 'package:sign_up_page_2/testing3.dart';
+import 'package:sign_up_page_2/widgets/dataFormat.dart';
 import 'package:sign_up_page_2/widgets/tableDataDesign2.dart';
 
 
 class Testing11 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    final Provider11 = Provider.of<Provider1>(context);
+    return Scaffold(
         appBar: AppBar(title: Text('Table-like Layout')),
         body: 
         //  SingleChildScrollView(
@@ -23,8 +26,61 @@ class Testing11 extends StatelessWidget {
         //                     ],
         //                   ),
         //                 ),
-        UserInformation(),
-      ),
+        FutureBuilder(
+            future: Provider11.fetchData(),
+            initialData: "Code sample",
+            builder: (BuildContext context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.deepPurpleAccent,
+                  ),
+                );
+              }
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text(
+                      'An ${snapshot.error} occurred',
+                      style: const TextStyle(fontSize: 18, color: Colors.red),
+                    ),
+                  );
+                } else if (snapshot.hasData) {
+                  final data = snapshot.data;
+
+                  return  ListView.builder(
+                    itemCount: Provider11.data1.length,
+                    itemBuilder: (context,index){
+                      return DataFormat111(
+                        ser:Provider11.data1[index].ser, 
+                        auth: Provider11.data1[index].auth, 
+                        actionTaken: Provider11.data1[index].action, 
+                        description: Provider11.data1[index].descr, 
+                        dueAt: Provider11.data1[index].dueAt, 
+                        qci: Provider11.data1[index].qci, 
+                        status: Provider11.data1[index].status, 
+                        tech: Provider11.data1[index].tech
+                        );
+                    });
+              
+
+
+
+
+
+
+
+                          
+                }
+              }
+
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          ),
+        
+    
     );
   }
 }

@@ -170,7 +170,7 @@ Future emailSignin(
      await blankList();
        await FirebaseFirestore.instance
     .collection('table_info')
-    .doc("SMfpoRM3hsZHqOuOq2aU").collection("16-oct-2024").doc('SMfpoRM3hsZHqOuOq2aU')
+    .doc("SMfpoRM3hsZHqOuOq2aU").collection("16-oct-2023").doc('SMfpoRM3hsZHqOuOq2aU')
     .get()
     .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
@@ -178,23 +178,14 @@ Future emailSignin(
         final Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
        data2  =data['data'];
 
-      for (var i = 0; i < data2.length; i++) {
-  if (data2[i]['data'].length > 1) {
-    for (var j = 0; j < data2[i]['data'].length; j++) {
-      print("${data2[i]['data'][j]} --> multi");
-      data1.add(DataFormat1(ser: data2[i]['data'][j]['ser'], auth: data2[i]['data'][j]['auth'], descr: data2[i]['data'][j]['descr'], status: data2[i]['data'][j]['status'], action:data2[i]['data'][j]['action'], tech: data2[i]['data'][j]['tech'], qci: data2[i]['data'][j]['qci']));
-    }
-  } else if (data2[i]['data'].length == 1) {
-    data1.add(DataFormat1(ser: data2[i]['data'][0]['ser'], auth: data2[i]['data'][0]['auth'], descr: data2[i]['data'][0]['descr'], status: data2[i]['data'][0]['status'], action: data2[i]['data'][0]['action'], tech: data2[i]['data'][0]['tech'], qci: data2[i]['data'][0]['qci']));
-    print("${data2[i]['data'][0]} --> simple");
-  }
-  // Remove the continue statement because it's not necessary here
-  // data1.add(DataFormat1(ser: data2[i]['ser'], auth: data2[i]['auth'], descr: data2[i]['descr'], status: data2[i]['status'], action: data2[i]['action'], tech: data2[i]['tech'], qci: data2[i]['qci']));
-  print("iteration $i");
-}
-//  for (var i = 0; i < data1.length; i++) {
-//    print(data1[i].ser);
-//  }
+    
+ for (var i = 0; i < data2.length; i++) {
+   data1.add(DataFormat1(ser: data2[i]['ser'], auth: data2[i]['auth'], descr: data2[i]['descr'], status: data2[i]['status'], action: data2[i]['action'], tech: data2[i]['tech'], qci: data2[i]['qci'], dueAt: data2[i]['due']));
+ }
+
+ for (var i = 0; i < data1.length; i++) {
+   print(data1[i].ser);
+ }
       }
     });
     
@@ -213,5 +204,6 @@ class DataFormat1 {
   var action;
   var tech;
   var qci;
-  DataFormat1({required this.ser,required this.auth,required this.descr,required this.status,required this.action,required this.tech,required this.qci});
+  var dueAt;
+  DataFormat1({required this.ser,required this.auth,required this.descr,required this.status,required this.action,required this.tech,required this.qci,required this.dueAt});
 }

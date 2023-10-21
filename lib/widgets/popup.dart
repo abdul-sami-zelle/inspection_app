@@ -78,7 +78,7 @@ class _TechNameState extends State<TechName> {
                                     color: Colors.white,
                                     subtitle: 'Your Name',
                                     weight: FontWeight.w500,
-                                    size: 15),
+                                    size: 8),
                                 SizedBox(height: 5.h,),
                                 TextFormField(
                                    controller: name,
