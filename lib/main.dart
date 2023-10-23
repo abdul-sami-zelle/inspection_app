@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:sign_up_page_2/authF.dart';
 import 'package:sign_up_page_2/screens/login_screen.dart';
 import 'package:sign_up_page_2/screens/sign_up_screen.dart';
 import 'package:sign_up_page_2/splashscreen.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
                 primarySwatch: Colors.blue,
               ),
 
-              home: Testing11()
+              home: FingerprintAuth()
               // MyHomePage(),
               //SplashScreen(),
             ),
